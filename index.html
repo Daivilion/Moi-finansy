@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b14"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Финансы"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-180.png"><link rel="manifest" href="manifest.webmanifest">
+<title>Мои финансы</title>
+<style>
+
+:root{
+  color-scheme:dark;
+  --bg:#0b0b14;
+  --surface:#14131f;
+  --surface-2:#191722;
+  --surface-3:#201b26;
+  --line:rgba(255,105,116,.16);
+  --line-strong:rgba(255,105,116,.34);
+  --text:#f7f4f5;
+  --muted:#a8a3ad;
+  --accent:#ff5967;
+  --accent-2:#d93e4c;
+  --accent-soft:rgba(255,89,103,.12);
+  --danger:#ff6975;
+  --ok:#72c997;
+  --shadow:0 18px 55px rgba(0,0,0,.30);
+  --ease:cubic-bezier(.19,1,.22,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Arial,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif}
+body{padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom));position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 82% 12%,rgba(140,28,40,.22) 0,transparent 45%),
+    radial-gradient(ellipse at 15% 72%,rgba(103,20,31,.17) 0,transparent 42%),
+    linear-gradient(180deg,#0b0b14 0%,#0d0c15 100%)
+}
+body:after{
+  content:"";position:fixed;inset:0;z-index:-1;opacity:.045;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitchTiles'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.7' filter='url(%23n)'/%3E%3C/svg%3E")
+}
+button,input,select{font:inherit}
+button{color:inherit;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.hidden{display:none!important}.muted{color:var(--muted)}
+header{
+  display:flex;justify-content:space-between;align-items:center;padding:22px 20px 14px;max-width:760px;margin:auto;
+  border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(11,11,20,.97) 70%,rgba(11,11,20,0));
+  position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)
+}
+.eyebrow{color:var(--accent);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+h1{margin:5px 0 0;font-size:29px;font-weight:560;letter-spacing:-.045em}
+h2{margin:4px 0 0;font-size:20px;font-weight:560;letter-spacing:-.025em}
+.icon{
+  border:1px solid var(--line);background:rgba(20,19,31,.78);width:43px;height:43px;display:grid;place-items:center;
+  color:var(--muted);font-size:22px;clip-path:polygon(0 0,100% 0,100% 78%,78% 100%,0 100%);transition:.2s var(--ease)
+}
+.icon:active{background:var(--accent);color:#160b0d;border-color:var(--accent)}
+main{max-width:760px;margin:auto;padding:12px 18px 34px}
+.switch{
+  display:grid;grid-template-columns:44px 1fr 44px;gap:9px;align-items:center;background:linear-gradient(135deg,rgba(31,24,31,.96),rgba(18,17,27,.96));
+  border:1px solid var(--line);padding:9px;margin:6px 0 16px;box-shadow:var(--shadow)
+}
+.switch button{border:1px solid var(--line);background:transparent;color:var(--muted);height:42px;font-size:25px;transition:.2s}
+.switch button:active{background:var(--accent);border-color:var(--accent);color:#190b0d}
+.month{text-align:center;font-weight:650;font-size:16px;text-transform:capitalize;letter-spacing:-.01em}
+.hero{
+  position:relative;overflow:hidden;background:linear-gradient(140deg,rgba(41,26,32,.88),rgba(19,17,27,.92));
+  border:1px solid var(--line-strong);padding:23px 20px 21px;box-shadow:var(--shadow);margin-bottom:13px
+}
+.hero:before{content:"";position:absolute;width:210px;height:210px;border:1px solid rgba(255,89,103,.14);border-radius:50%;right:-100px;top:-115px;box-shadow:0 0 80px rgba(255,89,103,.06)}
+.hero:after{content:"";position:absolute;inset:auto 0 0 0;height:1px;background:linear-gradient(90deg,var(--accent),transparent 70%)}
+.label{color:#bbb5bf;font-weight:600;font-size:12px;letter-spacing:.035em}
+.big{font-size:42px;line-height:1.05;font-weight:500;letter-spacing:-.055em;margin:10px 0 7px;color:#fff}
+.sub{color:var(--muted);font-size:12px;line-height:1.5}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card,.setting{
+  background:linear-gradient(145deg,rgba(28,24,34,.90),rgba(18,17,27,.92));
+  border:1px solid var(--line);padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.16);transition:transform .35s var(--ease),border-color .35s
+}
+.card:active{transform:translateY(-2px);border-color:var(--line-strong)}
+.cl{color:var(--muted);font-size:11px;font-weight:650;letter-spacing:.045em;margin-bottom:10px}
+.ca{font-size:22px;font-weight:520;letter-spacing:-.035em}
+.pos{color:var(--ok)}.neg{color:var(--danger)}
+.note{margin-top:8px;color:#807b86;font-size:10px;line-height:1.4}
+.section{display:flex;justify-content:space-between;align-items:center;margin:24px 1px 11px;padding-top:2px}
+.section h2{font-size:18px;font-weight:550}
+.link{border:0;background:transparent;color:var(--accent);font-weight:650;padding:8px 0;font-size:12px;letter-spacing:.02em}
+.edit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{background:rgba(20,19,31,.90);border:1px solid var(--line);padding:13px 14px;position:relative}
+.field:after{content:"";position:absolute;left:-1px;top:-1px;width:22px;height:2px;background:var(--accent)}
+.field label{display:block;color:var(--muted);font-size:11px;font-weight:650;margin-bottom:9px;letter-spacing:.035em}
+.field input{width:100%;border:0;outline:0;background:transparent;color:var(--text);font-size:22px;font-weight:520;min-width:0;padding:0}
+.plist{display:flex;flex-direction:column;gap:9px}
+.pitem{
+  background:rgba(20,19,31,.88);border:1px solid var(--line);padding:14px 15px;display:grid;grid-template-columns:1fr auto;
+  gap:8px 12px;align-items:center;transition:.25s var(--ease)
+}
+.pitem:active{border-color:var(--accent);background:rgba(31,23,30,.98);transform:translateX(2px)}
+.pname{font-weight:600;letter-spacing:-.01em}.pmeta{color:var(--muted);font-size:11px;margin-top:5px}.pamt{font-weight:560;font-size:17px}
+.badge{display:inline-block;margin-left:5px;padding:3px 7px;border:1px solid rgba(255,89,103,.22);background:var(--accent-soft);color:#f5adb4;font-size:9px;font-weight:650;letter-spacing:.03em}
+.empty{border:1px dashed rgba(255,89,103,.28);padding:26px 17px;text-align:center;color:var(--muted);background:rgba(20,19,31,.52);font-size:13px;line-height:1.55}
+.fab{
+  position:fixed;right:18px;bottom:calc(88px + env(safe-area-inset-bottom));width:58px;height:58px;border:1px solid rgba(255,132,142,.52);
+  background:var(--accent);color:#180b0e;font-size:31px;box-shadow:0 0 0 1px rgba(255,89,103,.10),0 15px 45px rgba(206,42,57,.30);
+  z-index:4;clip-path:polygon(0 0,100% 0,100% 78%,78% 100%,0 100%)
+}
+.prow{background:linear-gradient(145deg,rgba(25,22,31,.94),rgba(16,15,24,.95));border:1px solid var(--line);padding:15px;margin-bottom:9px}
+.ptop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.pm{font-weight:600;text-transform:capitalize}.pf{font-size:19px;font-weight:550}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}.mini div{background:rgba(255,255,255,.025);border-top:1px solid var(--line);padding:9px 4px}
+.mini span{display:block;color:var(--muted);font-size:9px;margin-bottom:5px;letter-spacing:.04em}.mini b{font-size:12px;font-weight:520}
+.setting{margin-bottom:11px}.setting label{display:block;font-weight:600;margin:14px 0 7px}
+.setting input{width:100%;border:1px solid var(--line);background:#100f18;color:var(--text);padding:13px;outline:0}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.btn{border:1px solid var(--line);padding:12px 15px;font-weight:650;background:transparent;transition:.2s;letter-spacing:.01em}
+.primary{background:var(--accent);border-color:var(--accent);color:#190b0e}.secondary{background:rgba(255,255,255,.025);color:#ddd6df}
+.danger{background:rgba(255,89,103,.08);color:#ff8a94;border-color:rgba(255,89,103,.24)}
+.tip{background:linear-gradient(135deg,#25171d,#13121b);border:1px solid var(--line-strong);color:#fff;padding:16px;margin-bottom:12px;position:relative;overflow:hidden}
+.tip:before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.tip b{display:block;margin-bottom:7px;font-weight:600}.tip p{margin:0;font-size:12px;color:var(--muted);line-height:1.55}
+nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:6;display:grid;grid-template-columns:repeat(4,1fr);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(11,11,20,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line)
+}
+nav button{border:0;background:transparent;color:#77717c;padding:5px 4px;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav span{font-size:21px;line-height:1}nav small{font-size:9px;font-weight:650;letter-spacing:.025em}.active{color:var(--accent)!important}
+.backdrop{position:fixed;inset:0;z-index:20;background:rgba(5,5,10,.72);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center}
+.modal{
+  width:100%;max-width:760px;max-height:92vh;overflow:auto;background:linear-gradient(160deg,#17141e,#0e0d15);
+  border:1px solid var(--line-strong);border-bottom:0;padding:20px 17px calc(26px + env(safe-area-inset-bottom));box-shadow:0 -18px 60px rgba(0,0,0,.45)
+}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+form label{display:block;font-weight:600;font-size:12px;margin:13px 0;color:#d6d0d8}
+form input,form select{width:100%;margin-top:7px;border:1px solid var(--line);background:#0f0e16;color:var(--text);padding:13px;min-height:46px;outline:0}
+.actions{display:flex;gap:10px;margin-top:20px}.actions .btn{flex:1}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main>*{animation:rise .55s var(--ease) both}main>*:nth-child(2){animation-delay:.05s}main>*:nth-child(3){animation-delay:.10s}main>*:nth-child(4){animation-delay:.15s}main>*:nth-child(5){animation-delay:.20s}
+@media(min-width:680px){.modal{border-bottom:1px solid var(--line-strong);margin-bottom:20px}.backdrop{align-items:center;padding:20px}}
+@media(max-width:390px){.big{font-size:36px}.ca{font-size:19px}.field input{font-size:20px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+<header><div><div class="eyebrow">Личный бюджет</div><h1>Мои финансы</h1></div><button class="icon" id="gear">⚙︎</button></header>
+<main id="main"></main>
+<nav><button class="nav active" data-page="home"><span>⌂</span><small>Главная</small></button><button class="nav" data-page="payments"><span>₽</span><small>Платежи</small></button><button class="nav" data-page="plan"><span>▤</span><small>План</small></button><button class="nav" data-page="settings"><span>⚙︎</span><small>Настройки</small></button></nav>
+<div class="backdrop hidden" id="backdrop"><section class="modal"><div class="mhead"><div><div class="eyebrow">Обязательный платёж</div><h2 id="mtitle">Добавить платёж</h2></div><button class="icon" id="close">×</button></div><form id="pform"><input type="hidden" id="pid"><label>Название<input id="pname" required placeholder="Например, аренда"></label><label>Категория<select id="pcat"><option>Жильё</option><option>Кредиты</option><option>ЖКХ</option><option>Связь</option><option>Подписки</option><option>Транспорт</option><option>Здоровье</option><option>Спорт</option><option>Налоги</option><option>Семья</option><option>Прочее</option></select></label><label>Сумма, ₽<input id="pamount" type="number" min="0" step="1" inputmode="decimal" required></label><label>Периодичность<select id="ptype"><option value="monthly">Каждый месяц</option><option value="yearly">Раз в год</option><option value="once">Разово</option></select></label><label>С какого месяца<input id="pstart" type="month" min="2026-08" required></label><label>По какой месяц <span class="muted">(необязательно)</span><input id="pend" type="month" min="2026-08"></label><div class="actions"><button type="button" class="btn secondary" id="del">Удалить</button><button class="btn primary">Сохранить</button></div></form></section></div>
+<input type="file" id="importFile" accept="application/json" class="hidden">
+<script>
+const $=id=>document.getElementById(id);const KEY='my-finance-pwa-v1',START='2026-08',MN=['январь','февраль','март','апрель','май','июнь','июль','август','сентябрь','октябрь','ноябрь','декабрь'];
+const mk=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,pd=k=>{let[a,b]=k.split('-').map(Number);return new Date(a,b-1,1)},add=(k,n)=>{let d=pd(k);d.setMonth(d.getMonth()+n);return mk(d)},title=k=>{let d=pd(k);return `${MN[d.getMonth()]} ${d.getFullYear()}`},money=n=>new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:0}).format(Number(n)||0),uid=()=>Date.now()+'-'+Math.random().toString(16).slice(2);
+const def=()=>({rate:20,selected:(mk(new Date())<START?START:mk(new Date())),months:{},payments:[]});let state=(()=>{try{return {...def(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return def()}})(),page='home';const save=()=>localStorage.setItem(KEY,JSON.stringify(state)),md=k=>state.months[k]||(state.months[k]={income:0,planned:0}),ap=(p,k)=>k>=p.start&&(!p.end||k<=p.end)&&(p.type==='monthly'||(p.type==='once'&&k===p.start)||(p.type==='yearly'&&k.slice(5)===p.start.slice(5))),pls=k=>state.payments.filter(p=>ap(p,k)),mand=k=>pls(k).reduce((s,p)=>s+Number(p.amount||0),0),calc=k=>{let m=md(k),income=+m.income||0,mandatory=mand(k),after=income-mandatory,sav=Math.max(0,after)*(+state.rate||0)/100,avail=after-sav,planned=+m.planned||0;return{income,mandatory,after,sav,avail,planned,free:avail-planned}},rec=t=>t==='monthly'?'ежемесячно':t==='yearly'?'ежегодно':'разово',esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const sw=()=>`<div class="switch"><button id="prev">‹</button><div class="month">${title(state.selected)}</div><button id="next">›</button></div>`;
+const prow=p=>`<div class="pitem" data-edit="${p.id}"><div><div class="pname">${esc(p.name)}</div><div class="pmeta">${esc(p.category)} <span class="badge">${rec(p.type)}</span></div></div><div class="pamt">${money(p.amount)}</div></div>`;
+function home(){let c=calc(state.selected),m=md(state.selected),list=pls(state.selected);return sw()+`<section class="hero"><div class="label">Можно использовать после накоплений</div><div class="big">${money(c.avail)}</div><div class="sub">После обязательных платежей и ${state.rate}% в накопления</div></section><section class="grid"><article class="card"><div class="cl">Обязательные платежи</div><div class="ca">${money(c.mandatory)}</div><div class="note">${list.length} платежей</div></article><article class="card"><div class="cl">В накопления</div><div class="ca">${money(c.sav)}</div><div class="note">${state.rate}% от остатка</div></article><article class="card"><div class="cl">После платежей</div><div class="ca ${c.after<0?'neg':''}">${money(c.after)}</div></article><article class="card"><div class="cl">Свободный остаток</div><div class="ca ${c.free<0?'neg':'pos'}">${money(c.free)}</div><div class="note">После плановых расходов</div></article></section><div class="section"><h2>Заполнить месяц</h2></div><section class="edit"><div class="field"><label>Зарплата / доход</label><input id="income" type="number" inputmode="decimal" min="0" value="${m.income||''}" placeholder="0"></div><div class="field"><label>Плановые расходы</label><input id="planned" type="number" inputmode="decimal" min="0" value="${m.planned||''}" placeholder="0"></div></section><div class="section"><h2>Платежи месяца</h2><button class="link" id="allPay">Открыть все</button></div>${list.length?`<div class="plist">${list.slice(0,4).map(prow).join('')}</div>`:'<div class="empty">Пока нет обязательных платежей. Добавь аренду, кредит, подписки или другие регулярные суммы.</div>'}`}
+function payments(){let list=pls(state.selected);return sw()+`<section class="hero"><div class="label">Обязательные платежи месяца</div><div class="big">${money(mand(state.selected))}</div><div class="sub">${list.length} активных платежей</div></section><div class="section"><h2>Список</h2><button class="link" id="rules">Все правила</button></div>${list.length?`<div class="plist">${list.map(prow).join('')}</div>`:'<div class="empty">В этом месяце обязательных платежей нет.</div>'}<button class="fab" id="addp">+</button>`}
+function allRules(){return `<div class="section"><h2>Все правила платежей</h2><button class="link" id="back">Назад</button></div>${state.payments.length?`<div class="plist">${[...state.payments].sort((a,b)=>a.start.localeCompare(b.start)).map(prow).join('')}</div>`:'<div class="empty">Правил пока нет.</div>'}<button class="fab" id="addp">+</button>`}
+function planPage(){let ks=[],k=state.selected;for(let i=0;i<12;i++){ks.push(k);k=add(k,1)}let total=ks.reduce((s,x)=>s+calc(x).sav,0);return sw()+`<section class="hero"><div class="label">План накоплений на следующие 12 месяцев</div><div class="big">${money(total)}</div><div class="sub">По введённым доходам и платежам</div></section><div class="section"><h2>12 месяцев</h2></div>${ks.map(k=>{let c=calc(k);return `<div class="prow" data-month="${k}"><div class="ptop"><div class="pm">${title(k)}</div><div class="pf ${c.free<0?'neg':''}">${money(c.free)}</div></div><div class="mini"><div><span>Доход</span><b>${money(c.income)}</b></div><div><span>Платежи</span><b>${money(c.mandatory)}</b></div><div><span>Отложить</span><b>${money(c.sav)}</b></div></div></div>`}).join('')}`}
+function settings(){return `<section class="setting"><div class="eyebrow">Накопления</div><h2>Процент от остатка</h2><label>Сколько откладывать, %</label><input id="rate" type="number" min="0" max="100" value="${state.rate}"><p class="muted">Считается после обязательных платежей.</p></section><section class="setting"><div class="eyebrow">Резервная копия</div><h2>Данные</h2><p class="muted">Данные хранятся локально в Safari. Периодически сохраняй резервную копию.</p><div class="btnrow"><button class="btn primary" id="export">Экспорт JSON</button><button class="btn secondary" id="import">Импорт</button></div></section><section class="tip"><b>Добавить на экран iPhone</b><p>Safari → «Поделиться» → «На экран Домой» → включить «Открывать как веб-приложение» → «Добавить».</p></section><section class="setting"><div class="eyebrow">Опасная зона</div><h2>Сброс</h2><button class="btn danger" id="reset">Сбросить все данные</button></section>`}
+function render(){document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.page===page));$('main').innerHTML=page==='home'?home():page==='payments'?payments():page==='plan'?planPage():settings();bind()}
+function bind(){$('prev')?.addEventListener('click',()=>{let p=add(state.selected,-1);if(p>=START){state.selected=p;save();render()}});$('next')?.addEventListener('click',()=>{state.selected=add(state.selected,1);save();render()});$('income')?.addEventListener('change',e=>{md(state.selected).income=+e.target.value||0;save();render()});$('planned')?.addEventListener('change',e=>{md(state.selected).planned=+e.target.value||0;save();render()});$('allPay')?.addEventListener('click',()=>{page='payments';render()});$('addp')?.addEventListener('click',()=>openModal());$('rules')?.addEventListener('click',()=>{$('main').innerHTML=allRules();bind()});$('back')?.addEventListener('click',render);document.querySelectorAll('[data-edit]').forEach(x=>x.onclick=()=>openModal(x.dataset.edit));document.querySelectorAll('[data-month]').forEach(x=>x.onclick=()=>{state.selected=x.dataset.month;save();page='home';render()});$('rate')?.addEventListener('change',e=>{state.rate=Math.max(0,Math.min(100,+e.target.value||0));save();render()});$('export')?.addEventListener('click',exportData);$('import')?.addEventListener('click',()=>$('importFile').click());$('reset')?.addEventListener('click',()=>{if(confirm('Удалить все финансовые данные?')){state=def();save();render()}})}
+function openModal(id){let p=id?state.payments.find(x=>x.id===id):null;$('mtitle').textContent=p?'Изменить платёж':'Добавить платёж';$('pid').value=p?.id||'';$('pname').value=p?.name||'';$('pcat').value=p?.category||'Жильё';$('pamount').value=p?.amount||'';$('ptype').value=p?.type||'monthly';$('pstart').value=p?.start||state.selected;$('pend').value=p?.end||'';$('del').style.visibility=p?'visible':'hidden';$('backdrop').classList.remove('hidden')};const closeM=()=>$('backdrop').classList.add('hidden');$('close').onclick=closeM;$('backdrop').onclick=e=>{if(e.target===$('backdrop'))closeM()};$('pform').onsubmit=e=>{e.preventDefault();let id=$('pid').value,o={id:id||uid(),name:$('pname').value.trim(),category:$('pcat').value,amount:+$('pamount').value||0,type:$('ptype').value,start:$('pstart').value<START?START:$('pstart').value,end:$('pend').value||''};if(id){let i=state.payments.findIndex(x=>x.id===id);state.payments[i]=o}else state.payments.push(o);save();closeM();render()};$('del').onclick=()=>{if($('pid').value&&confirm('Удалить этот платёж?')){state.payments=state.payments.filter(x=>x.id!==$('pid').value);save();closeM();render()}};
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{page=b.dataset.page;render()});$('gear').onclick=()=>{page='settings';render()};function exportData(){let b=new Blob([JSON.stringify({app:'Мои финансы',version:1,exportedAt:new Date().toISOString(),data:state},null,2)],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=`moi-finansy-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(u)}$('importFile').onchange=async e=>{let f=e.target.files?.[0];if(!f)return;try{let j=JSON.parse(await f.text()),d=j.data||j;state={...def(),...d,months:d.months||{},payments:d.payments||[]};save();alert('Резервная копия восстановлена');render()}catch{alert('Не удалось прочитать файл')}e.target.value=''};if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));render();
+</script>
+</body></html>
